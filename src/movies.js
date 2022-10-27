@@ -18,9 +18,16 @@ function scoresAverage(moviesArray) {
   if (moviesArray.length === 0) {
     return 0;
   }
-  const scoreArr = moviesArray.map((movie) => movie.score);
-  const scoreAverage = scoreArr.reduce((acc, score) => acc + score, 0) / scoreArr.length;
-  return Number(scoreAverage.toFixed(2));
+
+  const scoreAverage = moviesArray.reduce((acc, score) => {
+    if (score.score) {
+      return acc + score.score;
+    } else {
+      return acc;
+    }
+  }, 0);
+
+  return Number((scoreAverage / moviesArray.length).toFixed(2));
 }
 
 
@@ -38,7 +45,14 @@ function dramaMoviesScore(moviesArray) {
 
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 function orderByYear(moviesArray) {
-  const years = moviesArray.slice().sort((a, b) => a.year - b.year);
+  //cria uma nova array
+  const byYear = moviesArray.map(currentYear => currentYear);
+  const years = byYear.sort((a, b) => {
+    if (a.year === b.year) {
+      return a.title.localeCompare(b.title);
+    }
+    return a.year - b.year;
+  });
   return years;
 }
 
